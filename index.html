@@ -20,23 +20,18 @@
       padding: 0.5rem 2rem;
       display: flex; align-items: center; justify-content: space-between;
     }
-    nav.site-nav img.logo {
-      height: 50px;
-    }
-    nav.site-nav ul {
-      list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0;
-    }
+    nav.site-nav img.logo { height: 50px; }
+    nav.site-nav ul { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
     nav.site-nav ul li a { text-decoration: none; color: var(--text-color); font-weight: 500; }
     nav.site-nav ul li a:hover { color: var(--highlight); }
     .hero {
       background: url('https://source.unsplash.com/1600x600/?realestate,house') center/cover no-repeat;
-      color: var(--text-color); padding: 4rem 2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.3); margin-bottom: 2rem;
-      text-align: center;
+      color: var(--text-color); padding: 4rem 2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.3); margin-bottom: 2rem; text-align: center;
     }
     .hero h1 { margin: 0; font-size: 2.5rem; }
     .hero p { margin-top: 1rem; font-size: 1.25rem; }
     .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
-    .card { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background: var(--secondary-bg); }
+    .card { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background: var(--secondary-bg); cursor:pointer; }
     .card img { width: 100%; height: 200px; object-fit: cover; }
     .card-content { padding: 1rem; }
     .card-content h3 { margin: 0 0 .5rem 0; color: var(--text-color);}
@@ -46,19 +41,17 @@
     .socials a { margin-right: .5rem; text-decoration: none; color: var(--text-color); }
     .socials a:hover { color: var(--highlight); }
     .about-section { padding: 2rem; background: var(--secondary-bg); margin-top: 3rem; }
-    footer img.footer-logo {
-      height: 40px;
-      margin-bottom: 1rem;
-    }
+    footer img.footer-logo { height: 40px; margin-bottom: 1rem; }
+
     /* Modal */
     #detailModal {
       display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5); overflow: auto; padding: 2rem;
+      background: rgba(0,0,0,0.8); overflow: auto; padding: 2rem;
     }
     #detailContent {
-      background: #fff; border-radius: 8px; max-width: 700px; margin: auto; padding: 1rem;
+      background: #fff; border-radius: 8px; max-width: 800px; margin: auto; padding: 1rem;
     }
-    #detailContent img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; }
+    #detailContent img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: .5rem; }
     #dClose { float: right; cursor: pointer; font-size: 1.5rem; }
     .hidden { display: none; }
 
@@ -68,22 +61,19 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     #admin h2 { text-align: center; margin-bottom: 1rem; }
-    #admin input, #admin select, #admin textarea {
-      width: 100%; padding: .5rem; margin-bottom: 1rem; border-radius: 4px; border: 1px solid #ccc;
-      background: #fff; color: var(--text-color);
-    }
-    #admin button {
-      background: var(--highlight); color: white; border: none; padding: .7rem 1.5rem; border-radius: 4px;
-      cursor: pointer;
-    }
+    #admin input, #admin select, #admin textarea { width: 100%; padding: .5rem; margin-bottom: 1rem; border-radius: 4px; border: 1px solid #ccc; background: #fff; color: var(--text-color);}
+    #admin button { background: var(--highlight); color: white; border: none; padding: .7rem 1.5rem; border-radius: 4px; cursor: pointer;}
     #admin button:hover { background: #333; }
+
+    /* Gallery in modal */
+    #modalGallery { display: flex; gap: .5rem; overflow-x: auto; margin-bottom: 1rem; }
+    #modalGallery img { flex: 0 0 auto; width: 100px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid #ccc; border-radius: 4px; }
+    #modalGallery img.selected { border-color: var(--highlight); }
   </style>
 </head>
 <body>
   <nav class="site-nav">
-    <div>
-      <img src="assets/logo.png" alt="Experta Inmobiliaria" class="logo">
-    </div>
+    <div><img src="assets/logo.png" alt="Experta Inmobiliaria" class="logo"></div>
     <ul>
       <li><a href="#inicio" onclick="showSection('inicio')">Inicio</a></li>
       <li><a href="#listado" onclick="showSection('listado')">Listado</a></li>
@@ -100,12 +90,13 @@
 
     <section id="listado" class="cards">
       <!-- Propiedades iniciales -->
-      <div class="card">
+      <div class="card" onclick="openDetail(this)">
         <img src="https://source.unsplash.com/400x300/?house" alt="Propiedad 1">
         <div class="card-content">
           <h3>Casa en venta</h3>
           <div class="muted">Zona Norte, La Paz</div>
           <span class="tag">Venta</span>
+          <div class="muted">Precio: $120,000</div>
         </div>
       </div>
     </section>
@@ -121,12 +112,13 @@
         <input type="text" name="titulo" placeholder="Título del inmueble" required>
         <textarea name="descripcion" placeholder="Descripción" rows="3" required></textarea>
         <input type="text" name="ubicacion" placeholder="Ubicación" required>
+        <input type="number" name="precio" placeholder="Precio (USD)" required>
         <select name="tipo">
           <option value="Venta">Venta</option>
           <option value="Alquiler">Alquiler</option>
           <option value="Anticrético">Anticrético</option>
         </select>
-        <input type="file" name="foto" accept="image/*" required>
+        <input type="file" name="fotos" accept="image/*" multiple required>
         <button type="submit">Agregar Propiedad</button>
       </form>
     </section>
@@ -146,10 +138,11 @@
   <div id="detailModal" class="hidden">
     <div id="detailContent">
       <span id="dClose">&times;</span>
-      <img src="" alt="Detalle de propiedad">
+      <div id="modalGallery"></div>
       <h3></h3>
       <p></p>
       <span class="tag"></span>
+      <div class="muted" id="modalPrecio"></div>
     </div>
   </div>
 
@@ -163,36 +156,94 @@
       document.getElementById('detailModal').classList.add('hidden');
     }
 
+    function openDetail(card) {
+      const images = card.dataset.images ? JSON.parse(card.dataset.images) : [card.querySelector('img').src];
+      const title = card.querySelector('h3').textContent;
+      const desc = card.dataset.descripcion || '';
+      const tipo = card.querySelector('.tag').textContent;
+      const precio = card.dataset.precio || '';
+
+      const gallery = document.getElementById('modalGallery');
+      gallery.innerHTML = '';
+      images.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        if(i===0) img.classList.add('selected');
+        img.onclick = () => {
+          document.querySelector('#detailContent > img.main').src = src;
+          gallery.querySelectorAll('img').forEach(im => im.classList.remove('selected'));
+          img.classList.add('selected');
+        }
+        gallery.appendChild(img);
+      });
+
+      // imagen principal
+      let mainImg = document.querySelector('#detailContent > img.main');
+      if(!mainImg){
+        mainImg = document.createElement('img');
+        mainImg.className = 'main';
+        document.getElementById('detailContent').insertBefore(mainImg, document.getElementById('modalGallery').nextSibling);
+      }
+      mainImg.src = images[0];
+
+      document.querySelector('#detailContent h3').textContent = title;
+      document.querySelector('#detailContent p').textContent = desc;
+      document.querySelector('#detailContent .tag').textContent = tipo;
+      document.getElementById('modalPrecio').textContent = precio ? 'Precio: $'+precio : '';
+
+      document.getElementById('detailModal').classList.remove('hidden');
+    }
+
     // Admin form submit
     document.getElementById('adminForm').addEventListener('submit', function(e){
       e.preventDefault();
       const form = e.target;
-      const file = form.foto.files[0];
-      if(!file) { alert('Selecciona una imagen'); return; }
+      const files = Array.from(form.fotos.files);
+      if(files.length === 0){ alert('Selecciona al menos una imagen'); return; }
 
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const imgSrc = event.target.result;
-        const title = form.titulo.value;
-        const desc = form.descripcion.value;
-        const loc = form.ubicacion.value;
-        const type = form.tipo.value;
+      const images = [];
+      let loaded = 0;
 
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <img src="${imgSrc}" alt="${title}">
-          <div class="card-content">
-            <h3>${title}</h3>
-            <div class="muted">${loc}</div>
-            <span class="tag">${type}</span>
-          </div>`;
-        document.getElementById('listado').appendChild(card);
-        form.reset();
-        alert('Propiedad agregada correctamente');
-      };
-      reader.readAsDataURL(file);
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(event){
+          images.push(event.target.result);
+          loaded++;
+          if(loaded === files.length){
+            addCard(form, images);
+          }
+        }
+        reader.readAsDataURL(file);
+      });
     });
+
+    function addCard(form, images){
+      const title = form.titulo.value;
+      const desc = form.descripcion.value;
+      const loc = form.ubicacion.value;
+      const tipo = form.tipo.value;
+      const precio = form.precio.value;
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.images = JSON.stringify(images);
+      card.dataset.descripcion = desc;
+      card.dataset.precio = precio;
+      card.onclick = () => openDetail(card);
+
+      card.innerHTML = `
+        <img src="${images[0]}" alt="${title}">
+        <div class="card-content">
+          <h3>${title}</h3>
+          <div class="muted">${loc}</div>
+          <span class="tag">${tipo}</span>
+          <div class="muted">Precio: $${precio}</div>
+        </div>`;
+
+      document.getElementById('listado').appendChild(card);
+      form.reset();
+      alert('Propiedad agregada correctamente');
+    }
   </script>
 </body>
 </html>
