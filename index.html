@@ -26,87 +26,61 @@
     nav.site-nav ul li a:hover { color: var(--highlight); }
     .hero {
       background: url('https://source.unsplash.com/1600x600/?realestate,house') center/cover no-repeat;
-      color: var(--text-color); padding: 4rem 2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.3); margin-bottom: 2rem; text-align: center;
+      color: var(--text-color); padding: 4rem 2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.3); text-align: center;
     }
     .hero h1 { margin: 0; font-size: 2.5rem; }
     .hero p { margin-top: 1rem; font-size: 1.25rem; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
-    .card { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background: var(--secondary-bg); cursor:pointer; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; padding: 2rem 0; }
+    .card { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background: var(--secondary-bg); cursor:pointer; transition: transform 0.2s; }
+    .card:hover { transform: translateY(-3px); }
     .card img { width: 100%; height: 200px; object-fit: cover; }
     .card-content { padding: 1rem; }
     .card-content h3 { margin: 0 0 .5rem 0; color: var(--text-color);}
     .card-content .muted { font-size: .9rem; color: #333; margin-bottom: .5rem; }
     .tag { display: inline-block; padding: .2rem .6rem; border-radius: 4px; font-size: .75rem; font-weight: 600; margin-right: .5rem; background: var(--highlight); color: white; }
-    footer.site-footer { background: var(--secondary-bg); padding: 2rem; margin-top: 3rem; color: var(--text-color); text-align: center; }
-    .socials a { margin-right: .5rem; text-decoration: none; color: var(--text-color); }
-    .socials a:hover { color: var(--highlight); }
-    .about-section { padding: 2rem; background: var(--secondary-bg); margin-top: 3rem; }
-    footer img.footer-logo { height: 40px; margin-bottom: 1rem; }
-
-    /* Modal */
     #detailModal {
       display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.8); overflow: auto; padding: 2rem;
     }
     #detailContent {
-      background: #fff; border-radius: 8px; max-width: 800px; margin: auto; padding: 1rem;
+      background: #fff; border-radius: 8px; max-width: 800px; margin: auto; padding: 1rem; position: relative;
     }
     #detailContent img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: .5rem; }
-    #dClose { float: right; cursor: pointer; font-size: 1.5rem; }
-    .hidden { display: none; }
-
-    /* Admin */
-    #admin {
-      background: var(--primary-bg); padding: 2rem; border-radius: 8px; max-width: 600px; margin: 2rem auto;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
+    #dClose { position: absolute; right: 1rem; top: 1rem; cursor: pointer; font-size: 1.5rem; }
+    #modalGallery { display: flex; gap: .5rem; overflow-x: auto; margin-bottom: 1rem; }
+    #modalGallery img { flex: 0 0 auto; width: 100px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid #ccc; border-radius: 4px; }
+    #modalGallery img.selected { border-color: var(--highlight); }
+    #modalControls { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+    #modalControls button { background: var(--highlight); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; }
+    #modalControls button:hover { background: #333; }
+    #admin { background: var(--primary-bg); padding: 2rem; border-radius: 8px; max-width: 600px; margin: 2rem auto; box-shadow: 0 2px 6px rgba(0,0,0,0.1);}
     #admin h2 { text-align: center; margin-bottom: 1rem; }
     #admin input, #admin select, #admin textarea { width: 100%; padding: .5rem; margin-bottom: 1rem; border-radius: 4px; border: 1px solid #ccc; background: #fff; color: var(--text-color);}
     #admin button { background: var(--highlight); color: white; border: none; padding: .7rem 1.5rem; border-radius: 4px; cursor: pointer;}
     #admin button:hover { background: #333; }
-
-    /* Gallery in modal */
-    #modalGallery { display: flex; gap: .5rem; overflow-x: auto; margin-bottom: 1rem; }
-    #modalGallery img { flex: 0 0 auto; width: 100px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid #ccc; border-radius: 4px; }
-    #modalGallery img.selected { border-color: var(--highlight); }
+    .whatsapp-btn { display:inline-block; background:#25D366; color:white; padding:.5rem 1rem; border-radius:5px; text-decoration:none; margin-top:1rem; font-weight:bold;}
   </style>
 </head>
 <body>
   <nav class="site-nav">
     <div><img src="assets/logo.png" alt="Experta Inmobiliaria" class="logo"></div>
     <ul>
-      <li><a href="#inicio" onclick="showSection('inicio')">Inicio</a></li>
-      <li><a href="#listado" onclick="showSection('listado')">Listado</a></li>
-      <li><a href="#quienes" onclick="showSection('quienes')">Contáctenos</a></li>
-      <li><a href="#admin" onclick="showSection('admin')">Admin</a></li>
+      <li><a href="#inicio" onclick="scrollToSection('inicio')">Inicio</a></li>
+      <li><a href="#admin" onclick="scrollToSection('admin')">Admin</a></li>
     </ul>
   </nav>
 
-  <main class="container">
+  <main>
     <section class="hero" id="inicio">
       <h1>Bienvenido a Experta Inmobiliaria</h1>
       <p>Encuentra la propiedad de tus sueños: compra, venta o alquiler.</p>
     </section>
 
-    <section id="listado" class="cards">
-      <!-- Propiedades iniciales -->
-      <div class="card" onclick="openDetail(this)">
-        <img src="https://source.unsplash.com/400x300/?house" alt="Propiedad 1">
-        <div class="card-content">
-          <h3>Casa en venta</h3>
-          <div class="muted">Zona Norte, La Paz</div>
-          <span class="tag">Venta</span>
-          <div class="muted">Precio: $120,000</div>
-        </div>
-      </div>
+    <section class="cards" id="publicaciones">
+      <!-- Publicaciones se agregarán aquí -->
     </section>
 
-    <section id="quienes" class="about-section">
-      <h2>¿Quiénes somos?</h2>
-      <p>En Experta Inmobiliaria nos dedicamos a ayudarte a encontrar la propiedad perfecta para ti. Con años de experiencia en el mercado inmobiliario, ofrecemos asesoramiento personalizado y soluciones adaptadas a tus necesidades.</p>
-    </section>
-
-    <section id="admin" class="hidden">
+    <section id="admin">
       <h2>Panel Admin</h2>
       <form id="adminForm">
         <input type="text" name="titulo" placeholder="Título del inmueble" required>
@@ -124,114 +98,106 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <img src="assets/logo.png" alt="Experta Inmobiliaria" class="footer-logo">
-    <p>© 2025 Experta Inmobiliaria. Todos los derechos reservados.</p>
-    <div>Dirección: Ciudad, Barrio, Bolivia</div>
-    <div class="socials">
-      <a href="#" target="_blank">Facebook</a>
-      <a href="#" target="_blank">Instagram</a>
-      <a href="#" target="_blank">TikTok</a>
-    </div>
-  </footer>
-
-  <div id="detailModal" class="hidden">
+  <div id="detailModal">
     <div id="detailContent">
       <span id="dClose">&times;</span>
+      <div id="modalControls">
+        <button id="prevImg">&lt;</button>
+        <button id="nextImg">&gt;</button>
+      </div>
+      <img class="main" src="">
       <div id="modalGallery"></div>
       <h3></h3>
       <p></p>
       <span class="tag"></span>
       <div class="muted" id="modalPrecio"></div>
+      <a href="#" target="_blank" id="whatsappBtn" class="whatsapp-btn">Consultar por WhatsApp</a>
     </div>
   </div>
 
   <script>
-    function showSection(id) {
-      document.querySelectorAll('main > section').forEach(section => section.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
+    function scrollToSection(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+
+    const publicaciones = document.getElementById('publicaciones');
+    const modal = document.getElementById('detailModal');
+    const mainImg = document.querySelector('#detailContent > img.main');
+    const gallery = document.getElementById('modalGallery');
+    let currentIndex = 0, currentImages = [];
+
+    document.getElementById('dClose').onclick = ()=> modal.style.display='none';
+
+    function openDetail(card){
+      currentImages = card.dataset.images ? JSON.parse(card.dataset.images) : [card.querySelector('img').src];
+      currentIndex = 0;
+      updateModal();
+
+      document.querySelector('#detailContent h3').textContent = card.querySelector('h3').textContent;
+      document.querySelector('#detailContent p').textContent = card.dataset.descripcion;
+      document.querySelector('#detailContent .tag').textContent = card.querySelector('.tag').textContent;
+      document.getElementById('modalPrecio').textContent = 'Precio: $'+card.dataset.precio;
+      document.getElementById('whatsappBtn').href = `https://wa.me/591XXXXXXXXX?text=Hola!%20Estoy%20interesado%20en%20el%20inmueble:%20${encodeURIComponent(card.querySelector('h3').textContent)}`;
+
+      modal.style.display='block';
     }
 
-    document.getElementById('dClose').onclick = function() {
-      document.getElementById('detailModal').classList.add('hidden');
-    }
-
-    function openDetail(card) {
-      const images = card.dataset.images ? JSON.parse(card.dataset.images) : [card.querySelector('img').src];
-      const title = card.querySelector('h3').textContent;
-      const desc = card.dataset.descripcion || '';
-      const tipo = card.querySelector('.tag').textContent;
-      const precio = card.dataset.precio || '';
-
-      const gallery = document.getElementById('modalGallery');
+    function updateModal(){
+      mainImg.src = currentImages[currentIndex];
       gallery.innerHTML = '';
-      images.forEach((src, i) => {
+      currentImages.forEach((src,i)=>{
         const img = document.createElement('img');
         img.src = src;
-        if(i===0) img.classList.add('selected');
-        img.onclick = () => {
-          document.querySelector('#detailContent > img.main').src = src;
-          gallery.querySelectorAll('img').forEach(im => im.classList.remove('selected'));
-          img.classList.add('selected');
-        }
+        if(i===currentIndex) img.classList.add('selected');
+        img.onclick = ()=> { currentIndex=i; updateModal(); };
         gallery.appendChild(img);
       });
-
-      // imagen principal
-      let mainImg = document.querySelector('#detailContent > img.main');
-      if(!mainImg){
-        mainImg = document.createElement('img');
-        mainImg.className = 'main';
-        document.getElementById('detailContent').insertBefore(mainImg, document.getElementById('modalGallery').nextSibling);
-      }
-      mainImg.src = images[0];
-
-      document.querySelector('#detailContent h3').textContent = title;
-      document.querySelector('#detailContent p').textContent = desc;
-      document.querySelector('#detailContent .tag').textContent = tipo;
-      document.getElementById('modalPrecio').textContent = precio ? 'Precio: $'+precio : '';
-
-      document.getElementById('detailModal').classList.remove('hidden');
     }
 
-    // Admin form submit
-    document.getElementById('adminForm').addEventListener('submit', function(e){
+    document.getElementById('prevImg').onclick = ()=>{ currentIndex = (currentIndex-1+currentImages.length)%currentImages.length; updateModal(); }
+    document.getElementById('nextImg').onclick = ()=>{ currentIndex = (currentIndex+1)%currentImages.length; updateModal(); }
+
+    // Swipe móvil
+    let touchStartX = 0;
+    mainImg.addEventListener('touchstart', e=> { touchStartX = e.changedTouches[0].screenX; });
+    mainImg.addEventListener('touchend', e=> {
+      const diff = e.changedTouches[0].screenX - touchStartX;
+      if(diff > 50) currentIndex=(currentIndex-1+currentImages.length)%currentImages.length;
+      else if(diff < -50) currentIndex=(currentIndex+1)%currentImages.length;
+      updateModal();
+    });
+
+    document.getElementById('adminForm').addEventListener('submit', e=>{
       e.preventDefault();
       const form = e.target;
       const files = Array.from(form.fotos.files);
-      if(files.length === 0){ alert('Selecciona al menos una imagen'); return; }
+      if(files.length===0){ alert('Selecciona al menos una imagen'); return; }
 
       const images = [];
-      let loaded = 0;
-
-      files.forEach(file => {
+      let loaded=0;
+      files.forEach(file=>{
         const reader = new FileReader();
-        reader.onload = function(event){
+        reader.onload = event=> {
           images.push(event.target.result);
           loaded++;
-          if(loaded === files.length){
-            addCard(form, images);
-          }
-        }
+          if(loaded===files.length) addCard(form, images);
+        };
         reader.readAsDataURL(file);
       });
     });
 
     function addCard(form, images){
-      const title = form.titulo.value;
-      const desc = form.descripcion.value;
-      const loc = form.ubicacion.value;
-      const tipo = form.tipo.value;
-      const precio = form.precio.value;
+      const title=form.titulo.value;
+      const desc=form.descripcion.value;
+      const loc=form.ubicacion.value;
+      const tipo=form.tipo.value;
+      const precio=form.precio.value;
 
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.dataset.images = JSON.stringify(images);
-      card.dataset.descripcion = desc;
-      card.dataset.precio = precio;
-      card.onclick = () => openDetail(card);
-
-      card.innerHTML = `
+      const card=document.createElement('div');
+      card.className='card';
+      card.dataset.images=JSON.stringify(images);
+      card.dataset.descripcion=desc;
+      card.dataset.precio=precio;
+      card.onclick=()=>openDetail(card);
+      card.innerHTML=`
         <img src="${images[0]}" alt="${title}">
         <div class="card-content">
           <h3>${title}</h3>
@@ -239,8 +205,7 @@
           <span class="tag">${tipo}</span>
           <div class="muted">Precio: $${precio}</div>
         </div>`;
-
-      document.getElementById('listado').appendChild(card);
+      publicaciones.appendChild(card);
       form.reset();
       alert('Propiedad agregada correctamente');
     }
