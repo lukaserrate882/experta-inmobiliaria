@@ -30,14 +30,20 @@
     }
     .hero h1 { margin: 0; font-size: 2.5rem; }
     .hero p { margin-top: 1rem; font-size: 1.25rem; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; padding: 2rem 0; }
-    .card { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background: var(--secondary-bg); cursor:pointer; transition: transform 0.2s; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 2rem 1rem;
+      justify-items: center;
+    }
+    .card { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background: var(--secondary-bg); cursor:pointer; transition: transform 0.2s; width: 100%; max-width: 250px; }
     .card:hover { transform: translateY(-3px); }
-    .card img { width: 100%; height: 200px; object-fit: cover; }
-    .card-content { padding: 1rem; }
-    .card-content h3 { margin: 0 0 .5rem 0; color: var(--text-color);}
-    .card-content .muted { font-size: .9rem; color: #333; margin-bottom: .5rem; }
-    .tag { display: inline-block; padding: .2rem .6rem; border-radius: 4px; font-size: .75rem; font-weight: 600; margin-right: .5rem; background: var(--highlight); color: white; }
+    .card img { width: 100%; height: 150px; object-fit: cover; }
+    .card-content { padding: 0.5rem; }
+    .card-content h3 { margin: 0 0 .3rem 0; color: var(--text-color); font-size:1rem; }
+    .card-content .muted { font-size: .75rem; color: #333; margin-bottom: .3rem; }
+    .tag { display: inline-block; padding: .1rem .4rem; border-radius: 4px; font-size: .65rem; font-weight: 600; margin-right: .5rem; background: var(--highlight); color: white; }
     #detailModal {
       display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.8); overflow: auto; padding: 2rem;
@@ -48,16 +54,11 @@
     #detailContent img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: .5rem; }
     #dClose { position: absolute; right: 1rem; top: 1rem; cursor: pointer; font-size: 1.5rem; }
     #modalGallery { display: flex; gap: .5rem; overflow-x: auto; margin-bottom: 1rem; }
-    #modalGallery img { flex: 0 0 auto; width: 100px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid #ccc; border-radius: 4px; }
+    #modalGallery img { flex: 0 0 auto; width: 80px; height: 60px; object-fit: cover; cursor: pointer; border: 2px solid #ccc; border-radius: 4px; }
     #modalGallery img.selected { border-color: var(--highlight); }
     #modalControls { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
     #modalControls button { background: var(--highlight); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; }
     #modalControls button:hover { background: #333; }
-    #admin { background: var(--primary-bg); padding: 2rem; border-radius: 8px; max-width: 600px; margin: 2rem auto; box-shadow: 0 2px 6px rgba(0,0,0,0.1);}
-    #admin h2 { text-align: center; margin-bottom: 1rem; }
-    #admin input, #admin select, #admin textarea { width: 100%; padding: .5rem; margin-bottom: 1rem; border-radius: 4px; border: 1px solid #ccc; background: #fff; color: var(--text-color);}
-    #admin button { background: var(--highlight); color: white; border: none; padding: .7rem 1.5rem; border-radius: 4px; cursor: pointer;}
-    #admin button:hover { background: #333; }
     .whatsapp-btn { display:inline-block; background:#25D366; color:white; padding:.5rem 1rem; border-radius:5px; text-decoration:none; margin-top:1rem; font-weight:bold;}
   </style>
 </head>
@@ -66,7 +67,7 @@
     <div><img src="assets/logo.png" alt="Experta Inmobiliaria" class="logo"></div>
     <ul>
       <li><a href="#inicio" onclick="scrollToSection('inicio')">Inicio</a></li>
-      <li><a href="#admin" onclick="scrollToSection('admin')">Admin</a></li>
+      <li><a href="#adminPage" onclick="scrollToSection('adminPage')">Admin</a></li>
     </ul>
   </nav>
 
@@ -77,27 +78,11 @@
     </section>
 
     <section class="cards" id="publicaciones">
-      <!-- Publicaciones se agregarán aquí -->
-    </section>
-
-    <section id="admin">
-      <h2>Panel Admin</h2>
-      <form id="adminForm">
-        <input type="text" name="titulo" placeholder="Título del inmueble" required>
-        <textarea name="descripcion" placeholder="Descripción" rows="3" required></textarea>
-        <input type="text" name="ubicacion" placeholder="Ubicación" required>
-        <input type="number" name="precio" placeholder="Precio (USD)" required>
-        <select name="tipo">
-          <option value="Venta">Venta</option>
-          <option value="Alquiler">Alquiler</option>
-          <option value="Anticrético">Anticrético</option>
-        </select>
-        <input type="file" name="fotos" accept="image/*" multiple required>
-        <button type="submit">Agregar Propiedad</button>
-      </form>
+      <!-- Publicaciones aparecerán aquí -->
     </section>
   </main>
 
+  <!-- Modal -->
   <div id="detailModal">
     <div id="detailContent">
       <span id="dClose">&times;</span>
@@ -115,8 +100,31 @@
     </div>
   </div>
 
+  <!-- Página admin separada (puede estar en /admin.html o en otra sección no pública) -->
+  <div id="adminPage" style="display:none;">
+    <section id="admin">
+      <h2>Panel Admin</h2>
+      <form id="adminForm">
+        <input type="text" name="titulo" placeholder="Título del inmueble" required>
+        <textarea name="descripcion" placeholder="Descripción" rows="3" required></textarea>
+        <input type="text" name="ubicacion" placeholder="Ubicación" required>
+        <input type="number" name="precio" placeholder="Precio (USD)" required>
+        <select name="tipo">
+          <option value="Venta">Venta</option>
+          <option value="Alquiler">Alquiler</option>
+          <option value="Anticrético">Anticrético</option>
+        </select>
+        <input type="file" name="fotos" accept="image/*" multiple required>
+        <button type="submit">Agregar Propiedad</button>
+      </form>
+    </section>
+  </div>
+
   <script>
-    function scrollToSection(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:'smooth'});
+    }
 
     const publicaciones = document.getElementById('publicaciones');
     const modal = document.getElementById('detailModal');
@@ -165,24 +173,28 @@
       updateModal();
     });
 
-    document.getElementById('adminForm').addEventListener('submit', e=>{
-      e.preventDefault();
-      const form = e.target;
-      const files = Array.from(form.fotos.files);
-      if(files.length===0){ alert('Selecciona al menos una imagen'); return; }
+    // Admin solo disponible en sección separada
+    const adminForm = document.getElementById('adminForm');
+    if(adminForm){
+      adminForm.addEventListener('submit', e=>{
+        e.preventDefault();
+        const form = e.target;
+        const files = Array.from(form.fotos.files);
+        if(files.length===0){ alert('Selecciona al menos una imagen'); return; }
 
-      const images = [];
-      let loaded=0;
-      files.forEach(file=>{
-        const reader = new FileReader();
-        reader.onload = event=> {
-          images.push(event.target.result);
-          loaded++;
-          if(loaded===files.length) addCard(form, images);
-        };
-        reader.readAsDataURL(file);
+        const images = [];
+        let loaded=0;
+        files.forEach(file=>{
+          const reader = new FileReader();
+          reader.onload = event=> {
+            images.push(event.target.result);
+            loaded++;
+            if(loaded===files.length) addCard(form, images);
+          };
+          reader.readAsDataURL(file);
+        });
       });
-    });
+    }
 
     function addCard(form, images){
       const title=form.titulo.value;
