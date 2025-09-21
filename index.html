@@ -7,13 +7,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
   <style>
     :root {
-      --accent: #0b76ff;
-      --highlight: #ff5e3a;
+      --primary-bg: #f7f7f7;
+      --secondary-bg: #e0e0e0;
+      --accent: #999999;
+      --highlight: #555555;
+      --text-color: #000000;
     }
-    body { margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
+    body { margin: 0; padding: 0; font-family: 'Arial', sans-serif; background: var(--primary-bg); color: var(--text-color); }
     nav.site-nav {
-      background: #fff;
-      border-bottom: 1px solid #eee;
+      background: var(--secondary-bg);
+      border-bottom: 1px solid #ccc;
       padding: 0.5rem 2rem;
       display: flex; align-items: center; justify-content: space-between;
     }
@@ -23,27 +26,26 @@
     nav.site-nav ul {
       list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0;
     }
-    nav.site-nav ul li a { text-decoration: none; color: #333; font-weight: 500; }
-    nav.site-nav ul li a:hover { color: var(--accent); }
+    nav.site-nav ul li a { text-decoration: none; color: var(--text-color); font-weight: 500; }
+    nav.site-nav ul li a:hover { color: var(--highlight); }
     .hero {
       background: url('https://source.unsplash.com/1600x600/?realestate,house') center/cover no-repeat;
-      color: white; padding: 4rem 2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-bottom: 2rem;
+      color: var(--text-color); padding: 4rem 2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.3); margin-bottom: 2rem;
       text-align: center;
     }
     .hero h1 { margin: 0; font-size: 2.5rem; }
     .hero p { margin-top: 1rem; font-size: 1.25rem; }
     .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
-    .card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); background: #fff; }
+    .card { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background: var(--secondary-bg); }
     .card img { width:100%; height:200px; object-fit:cover; }
     .card-content { padding: 1rem; }
-    .card-content h3 { margin: 0 0 .5rem 0; }
-    .card-content .muted { font-size: .9rem; color: #666; margin-bottom: .5rem; }
-    .tag { display: inline-block; padding: .2rem .6rem; border-radius: 4px; font-size: .75rem; font-weight: 600; margin-right: .5rem; background: var(--accent); color: white; }
-    .tag.offer { background: var(--highlight); }
-    footer.site-footer { background: #f9f9f9; padding: 2rem; margin-top: 3rem; color: #555; text-align: center; }
-    .socials a { margin-right: .5rem; text-decoration: none; color: #555; }
-    .socials a:hover { color: var(--accent); }
-    .about-section { padding: 2rem; background: #f4f4f4; margin-top: 3rem; }
+    .card-content h3 { margin: 0 0 .5rem 0; color: var(--text-color);}
+    .card-content .muted { font-size: .9rem; color: #333; margin-bottom: .5rem; }
+    .tag { display: inline-block; padding: .2rem .6rem; border-radius: 4px; font-size: .75rem; font-weight: 600; margin-right: .5rem; background: var(--highlight); color: white; }
+    footer.site-footer { background: var(--secondary-bg); padding: 2rem; margin-top: 3rem; color: var(--text-color); text-align: center; }
+    .socials a { margin-right: .5rem; text-decoration: none; color: var(--text-color); }
+    .socials a:hover { color: var(--highlight); }
+    .about-section { padding: 2rem; background: var(--secondary-bg); margin-top: 3rem; }
     footer img.footer-logo {
       height: 40px;
       margin-bottom: 1rem;
@@ -58,8 +60,23 @@
     }
     #detailContent img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; }
     #dClose { float: right; cursor: pointer; font-size: 1.5rem; }
-    /* Ocultar secciones */
     .hidden { display: none; }
+
+    /* Admin */
+    #admin {
+      background: var(--primary-bg); padding: 2rem; border-radius: 8px; max-width: 600px; margin: 2rem auto;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    #admin h2 { text-align: center; }
+    #admin input, #admin select, #admin textarea {
+      width: 100%; padding: .5rem; margin-bottom: 1rem; border-radius: 4px; border: 1px solid #ccc;
+      background: #fff; color: var(--text-color);
+    }
+    #admin button {
+      background: var(--highlight); color: white; border: none; padding: .7rem 1.5rem; border-radius: 4px;
+      cursor: pointer;
+    }
+    #admin button:hover { background: #333; }
   </style>
 </head>
 <body>
@@ -69,10 +86,8 @@
     </div>
     <ul>
       <li><a href="#inicio" onclick="showSection('inicio')">Inicio</a></li>
-      <li><a href="#ventas" onclick="showSection('listado')">Ventas</a></li>
-      <li><a href="#alquileres" onclick="showSection('listado')">Alquileres</a></li>
-      <li><a href="#anticretico" onclick="showSection('listado')">Anticrético</a></li>
-      <li><a href="#contacto" onclick="showSection('quienes')">Contáctenos</a></li>
+      <li><a href="#listado" onclick="showSection('listado')">Listado</a></li>
+      <li><a href="#quienes" onclick="showSection('quienes')">Contáctenos</a></li>
       <li><a href="#admin" onclick="showSection('admin')">Admin</a></li>
     </ul>
   </nav>
@@ -114,6 +129,22 @@
       <h2>¿Quiénes somos?</h2>
       <p>En Experta Inmobiliaria nos dedicamos a ayudarte a encontrar la propiedad perfecta para ti. Con años de experiencia en el mercado inmobiliario, ofrecemos asesoramiento personalizado y soluciones adaptadas a tus necesidades.</p>
     </section>
+
+    <section id="admin" class="hidden">
+      <h2>Panel Admin</h2>
+      <form id="adminForm">
+        <input type="text" name="titulo" placeholder="Título del inmueble" required>
+        <textarea name="descripcion" placeholder="Descripción" rows="3" required></textarea>
+        <input type="text" name="ubicacion" placeholder="Ubicación" required>
+        <select name="tipo">
+          <option value="Venta">Venta</option>
+          <option value="Alquiler">Alquiler</option>
+          <option value="Anticrético">Anticrético</option>
+        </select>
+        <input type="file" name="foto" accept="image/*" required>
+        <button type="submit">Agregar Propiedad</button>
+      </form>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -145,17 +176,37 @@
       document.getElementById(id).classList.remove('hidden');
     }
 
-    function openDetail(imgSrc, title, description, type) {
-      document.querySelector('#detailModal img').src = imgSrc;
-      document.querySelector('#detailModal h3').textContent = title;
-      document.querySelector('#detailModal p').textContent = description;
-      document.querySelector('#detailModal .tag').textContent = type;
-      document.getElementById('detailModal').classList.remove('hidden');
-    }
-
     document.getElementById('dClose').onclick = function() {
       document.getElementById('detailModal').classList.add('hidden');
     }
+
+    // Admin form submit
+    document.getElementById('adminForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const form = e.target;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const imgSrc = event.target.result;
+        const title = form.titulo.value;
+        const desc = form.descripcion.value;
+        const loc = form.ubicacion.value;
+        const type = form.tipo.value;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${imgSrc}" alt="${title}">
+          <div class="card-content">
+            <h3>${title}</h3>
+            <div class="muted">${loc}</div>
+            <span class="tag">${type}</span>
+          </div>`;
+        document.getElementById('listado').appendChild(card);
+        form.reset();
+        alert('Propiedad agregada correctamente');
+      }
+      reader.readAsDataURL(form.foto.files[0]);
+    });
   </script>
 </body>
 </html>
