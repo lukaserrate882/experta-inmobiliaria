@@ -10,7 +10,7 @@
       --accent: #0b76ff;
       --highlight: #ff5e3a;
     }
-    body { margin: 0; padding: 0; }
+    body { margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
     nav.site-nav {
       background: #fff;
       border-bottom: 1px solid #eee;
@@ -64,7 +64,6 @@
 </head>
 <body>
   <nav class="site-nav">
-    <!-- Logo en navbar -->
     <div>
       <img src="assets/logo.png" alt="Experta Inmobiliaria" class="logo">
     </div>
@@ -84,12 +83,40 @@
       <p>Encuentra la propiedad de tus sueños: compra, venta o alquiler.</p>
     </section>
 
-    <!-- (Aquí se mantiene el listado, admin y demás secciones como ya los programamos antes) -->
+    <section id="listado" class="cards">
+      <div class="card">
+        <img src="https://source.unsplash.com/400x300/?house" alt="Propiedad 1" onerror="this.src='https://via.placeholder.com/400x300?text=Propiedad+1'">
+        <div class="card-content">
+          <h3>Casa en venta</h3>
+          <div class="muted">Zona Norte, La Paz</div>
+          <span class="tag">Venta</span>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://source.unsplash.com/400x300/?apartment" alt="Propiedad 2" onerror="this.src='https://via.placeholder.com/400x300?text=Propiedad+2'">
+        <div class="card-content">
+          <h3>Departamento en alquiler</h3>
+          <div class="muted">Centro, La Paz</div>
+          <span class="tag">Alquiler</span>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://source.unsplash.com/400x300/?villa" alt="Propiedad 3" onerror="this.src='https://via.placeholder.com/400x300?text=Propiedad+3'">
+        <div class="card-content">
+          <h3>Villa en anticrético</h3>
+          <div class="muted">Zona Sur, La Paz</div>
+          <span class="tag offer">Anticrético</span>
+        </div>
+      </div>
+    </section>
 
+    <section id="quienes" class="about-section">
+      <h2>¿Quiénes somos?</h2>
+      <p>En Experta Inmobiliaria nos dedicamos a ayudarte a encontrar la propiedad perfecta para ti. Con años de experiencia en el mercado inmobiliario, ofrecemos asesoramiento personalizado y soluciones adaptadas a tus necesidades.</p>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <!-- Logo en el footer -->
     <img src="assets/logo.png" alt="Experta Inmobiliaria" class="footer-logo">
     <p>© 2025 Experta Inmobiliaria. Todos los derechos reservados.</p>
     <div>Dirección: Ciudad, Barrio, Bolivia</div>
@@ -100,6 +127,35 @@
     </div>
   </footer>
 
-  <!-- Aquí sigue el mismo <script> que te pasé antes -->
+  <div id="detailModal" class="hidden">
+    <div id="detailContent">
+      <span id="dClose">&times;</span>
+      <img src="" alt="Detalle de propiedad">
+      <h3></h3>
+      <p></p>
+      <span class="tag"></span>
+    </div>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('main > section').forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function openDetail(imgSrc, title, description, type) {
+      document.querySelector('#detailModal img').src = imgSrc;
+      document.querySelector('#detailModal h3').textContent = title;
+      document.querySelector('#detailModal p').textContent = description;
+      document.querySelector('#detailModal .tag').textContent = type;
+      document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    document.getElementById('dClose').onclick = function() {
+      document.getElementById('detailModal').classList.add('hidden');
+    }
+  </script>
 </body>
 </html>
