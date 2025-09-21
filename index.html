@@ -3,300 +3,259 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EXPERTA INMOBILIARIA — Panel</title>
+  <title>EXPERTA INMOBILIARIA</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
   <style>
-    :root{
+    :root {
       --accent: #0b76ff;
+      --highlight: #ff5e3a;
     }
-    header.site-header{
-      background: linear-gradient(135deg, rgba(11,118,255,0.12), rgba(11,118,255,0.04));
-      padding: 2rem 1rem;
-      margin-bottom: 1.25rem;
-      border-radius: 12px;
+    body { margin: 0; padding: 0; }
+    nav.site-nav {
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
     }
+    nav.site-nav ul {
+      list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0;
+    }
+    nav.site-nav ul li a { text-decoration: none; color: #333; font-weight: 500; }
+    nav.site-nav ul li a:hover { color: var(--accent); }
     .hero {
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:1rem;
-      align-items:center;
+      background: url('https://source.unsplash.com/1600x600/?realestate,house') center/cover no-repeat;
+      color: white; padding: 4rem 2rem; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-bottom: 2rem;
     }
-    @media(min-width:800px){
-      .hero{ grid-template-columns: 1fr 420px; }
+    .hero h1 { margin: 0; font-size: 2.5rem; }
+    .hero p { margin-top: 1rem; font-size: 1.25rem; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
+    .card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); background: #fff; }
+    .card img { width:100%; height:200px; object-fit:cover; }
+    .card-content { padding: 1rem; }
+    .card-content h3 { margin: 0 0 .5rem 0; }
+    .card-content .muted { font-size: .9rem; color: #666; margin-bottom: .5rem; }
+    .tag { display: inline-block; padding: .2rem .6rem; border-radius: 4px; font-size: .75rem; font-weight: 600; margin-right: .5rem; background: var(--accent); color: white; }
+    .tag.offer { background: var(--highlight); }
+    footer.site-footer { background: #f9f9f9; padding: 2rem; margin-top: 3rem; color: #555; }
+    .socials a { margin-right: .5rem; text-decoration: none; color: #555; }
+    .socials a:hover { color: var(--accent); }
+    .about-section { padding: 2rem; background: #f4f4f4; margin-top: 3rem; }
+    /* Modal */
+    #detailModal {
+      display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); overflow: auto; padding: 2rem;
     }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:1rem; }
-    .card img { width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:0.5rem;}
-    .muted { color: #6b7280; font-size:0.95rem;}
-    .controls { display:flex; gap:.5rem; flex-wrap:wrap; }
-    main.container { padding-bottom:3rem; }
-    .negative-space { margin-top: -1.25rem; }
-    .detail-modal { position: fixed; inset:0; display:none; align-items:center; justify-content:center; background: rgba(0,0,0,0.35); padding:20px; z-index:50; }
-    .detail-modal .panel { max-width:900px; width:100%; background:white; padding:1.25rem; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.15); }
-    .visible { display:flex !important; }
-    footer.site-footer { margin-top:2rem; color:#374151; font-size:0.95rem; }
-    .tag { background: rgba(11,118,255,0.08); color:var(--accent); padding:.15rem .5rem; border-radius:6px; font-weight:600; font-size:.85rem;}
+    #detailContent {
+      background: #fff; border-radius: 8px; max-width: 700px; margin: auto; padding: 1rem;
+    }
+    #detailContent img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; }
+    #dClose { float: right; cursor: pointer; font-size: 1.5rem; }
+    /* Ocultar secciones */
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <nav>
+  <nav class="site-nav">
+    <div class="logo"><strong>EXPERTA INMOBILIARIA</strong></div>
     <ul>
-      <li><strong>EXPERTA INMOBILIARIA</strong></li>
-      <li><a href="#nueva">Nueva publicación</a></li>
-      <li><a href="#listado">Listado</a></li>
-      <li><a id="openSettings" href="#ajustes">Ajustes</a></li>
+      <li><a href="#inicio" onclick="showSection('inicio')">Inicio</a></li>
+      <li><a href="#ventas" onclick="showSection('listado')">Ventas</a></li>
+      <li><a href="#alquileres" onclick="showSection('listado')">Alquileres</a></li>
+      <li><a href="#anticretico" onclick="showSection('listado')">Anticrético</a></li>
+      <li><a href="#contacto" onclick="showSection('quienes')">Contáctenos</a></li>
+      <li><a href="#admin" onclick="showSection('admin')">Admin</a></li>
     </ul>
   </nav>
 
   <main class="container">
-    <header class="site-header">
-      <div class="hero">
-        <div>
-          <h1>EXPERTA INMOBILIARIA</h1>
-          <p class="muted">Panel de administración — crea, edita y elimina publicaciones. Al ver una publicación puedes contactar vía WhatsApp con un mensaje prellenado.</p>
-          <div class="controls negative-space" style="margin-top:1rem;">
-            <button id="btnNew" class="contrast">Nueva publicación</button>
-            <button id="btnClear" class="secondary">Vaciar demo</button>
-            <a href="#" id="btnImport" class="secondary">Importar ejemplo</a>
-          </div>
-        </div>
-        <figure>
-          <img src="https://source.unsplash.com/600x420/?real-estate,house" alt="Imagen inmobiliaria">
-          <figcaption class="muted">Imagen dinámica de Unsplash (cambia cada carga).</figcaption>
-        </figure>
-      </div>
-    </header>
-
-    <section id="nueva">
-      <article>
-        <h2 id="formTitle">Crear nueva publicación</h2>
-        <form id="propForm">
-          <div class="grid">
-            <label for="title">Título</label>
-            <input id="title" name="title" required placeholder="Ej: Departamento 2D en Recoleta">
-            <label for="price">Precio (USD)</label>
-            <input id="price" name="price" type="number" min="0" placeholder="120000">
-            <label for="location">Ubicación</label>
-            <input id="location" name="location" placeholder="Ciudad, Barrio">
-            <label for="desc">Descripción</label>
-            <textarea id="desc" name="desc" rows="4" placeholder="Descripción breve del inmueble"></textarea>
-            <label for="img">URL imagen (opcional)</label>
-            <input id="img" name="img" placeholder="https://... (si no, se usa Unsplash)">
-          </div>
-          <input type="hidden" id="propId">
-          <div style="margin-top:.5rem;">
-            <button type="submit" class="primary">Guardar publicación</button>
-            <button type="button" id="cancelEdit" class="secondary">Cancelar</button>
-          </div>
-        </form>
-      </article>
+    <section class="hero" id="inicio">
+      <h1>Bienvenido a Experta Inmobiliaria</h1>
+      <p>Encuentra la propiedad de tus sueños: compra, venta o alquiler.</p>
     </section>
 
-    <section id="ajustes" style="margin-top:1.25rem;">
-      <h3>Ajustes</h3>
-      <p class="muted">Configura el número de WhatsApp al que serán dirigidos los contactos (formato internacional, ej: 5491123456789 sin '+').</p>
-      <form id="settingsForm" style="max-width:520px;">
-        <label for="waNumber">Número WhatsApp</label>
-        <input id="waNumber" placeholder="5491123456789">
-        <label for="waGreeting">Mensaje por defecto (opcional)</label>
-        <input id="waGreeting" placeholder="Hola, estoy interesado en este inmueble...">
-        <div style="margin-top:.5rem;">
-          <button class="primary" type="submit">Guardar ajustes</button>
-          <button id="resetSettings" class="secondary" type="button">Restaurar valores</button>
+    <!-- Listado público -->
+    <section id="listado">
+      <h2>Propiedades destacadas</h2>
+      <div id="cards" class="cards"></div>
+      <p id="emptyNotice" class="muted" style="margin-top:1rem;">No hay publicaciones todavía.</p>
+    </section>
+
+    <!-- Admin -->
+    <section id="admin" class="hidden">
+      <h2>Panel de administración</h2>
+      <form id="propForm">
+        <div class="grid">
+          <label for="title">Título</label>
+          <input id="title" name="title" required placeholder="Ej: Departamento 2D en Recoleta">
+          <label for="price">Precio</label>
+          <input id="price" name="price" type="number" min="0" placeholder="120000">
+          <label for="location">Ubicación</label>
+          <input id="location" name="location" placeholder="Ciudad, Barrio">
+          <label for="area">Área (m²)</label>
+          <input id="area" name="area" type="number" min="0" placeholder="120">
+          <label for="bedrooms">Dormitorios</label>
+          <input id="bedrooms" name="bedrooms" type="number" min="0" placeholder="2">
+          <label for="bathrooms">Baños</label>
+          <input id="bathrooms" name="bathrooms" type="number" min="0" placeholder="1">
+          <label for="desc">Descripción</label>
+          <textarea id="desc" name="desc" rows="4" placeholder="Descripción breve del inmueble"></textarea>
+          <label for="img">URL imagen (opcional)</label>
+          <input id="img" name="img" placeholder="https://...">
+        </div>
+        <input type="hidden" id="propId">
+        <div style="margin-top:1rem;">
+          <button type="submit" class="primary">Guardar publicación</button>
+          <button type="button" id="cancelEdit" class="secondary">Cancelar</button>
         </div>
       </form>
     </section>
 
-    <section id="listado" style="margin-top:1.5rem;">
-      <h2>Publicaciones</h2>
-      <div id="cards" class="cards"></div>
-      <p id="emptyNotice" class="muted" style="margin-top:1rem;">Aún no hay publicaciones. Crea la primera arriba.</p>
-    </section>
-
-    <div id="detailModal" class="detail-modal" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="panel">
-        <div style="display:flex; gap:1rem; align-items:flex-start;">
-          <div style="flex:1;">
-            <h3 id="d-title">Título</h3>
-            <p id="d-location" class="muted">Ubicación</p>
-            <p id="d-price" class="tag">Precio</p>
-            <p id="d-desc" style="margin-top:.5rem;">Descripción</p>
-            <div style="margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap;">
-              <a id="waLink" class="contrast" href="#" target="_blank" rel="noopener">Contactar por WhatsApp</a>
-              <button id="dClose" class="secondary">Cerrar</button>
-            </div>
-          </div>
-          <div style="width:320px;">
-            <img id="d-img" src="" alt="Imagen inmueble" style="width:100%; height:220px; object-fit:cover; border-radius:8px;">
-          </div>
-        </div>
+    <!-- Modal detalle -->
+    <div id="detailModal">
+      <div id="detailContent">
+        <span id="dClose">&times;</span>
+        <img id="d-img" src="" alt="Imagen inmueble">
+        <h3 id="d-title"></h3>
+        <p id="d-location" class="muted"></p>
+        <p id="d-area" class="muted"></p>
+        <p id="d-bedrooms" class="muted"></p>
+        <p id="d-bathrooms" class="muted"></p>
+        <p id="d-price"></p>
+        <p id="d-desc"></p>
+        <a id="waLink" class="contrast" target="_blank">Consultar por WhatsApp</a>
       </div>
     </div>
 
-    <footer class="site-footer">
-      <small>Demo creada para <strong>EXPERTA INMOBILIARIA</strong>. Usa <em>localStorage</em> para almacenar datos localmente en tu navegador.</small>
-    </footer>
+    <!-- Quiénes somos -->
+    <section class="about-section hidden" id="quienes">
+      <h2>Quiénes somos</h2>
+      <p>Experta Inmobiliaria es una empresa dedicada a ayudar a nuestros clientes a encontrar, comprar, vender o alquilar propiedades. Con profesionalismo, transparencia y compromiso.</p>
+      <p><strong>Teléfono:</strong> +591 70000000</p>
+      <p><strong>Email:</strong> contacto@experta.com</p>
+    </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Experta Inmobiliaria. Todos los derechos reservados.</p>
+      <div>Dirección: Ciudad, Barrio, Bolivia</div>
+      <div class="socials">
+        <a href="#" target="_blank">Facebook</a>
+        <a href="#" target="_blank">Instagram</a>
+        <a href="#" target="_blank">TikTok</a>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    const STORAGE_KEY = 'experta_inmobiliaria_posts_v1';
-    const SETTINGS_KEY = 'experta_inmobiliaria_settings_v1';
+    const STORAGE_KEY = 'experta_posts_v4';
+    const WA_NUMBER = '+59170000000'; // <-- cámbialo por tu WhatsApp oficial
 
     const form = document.getElementById('propForm');
     const cardsEl = document.getElementById('cards');
     const emptyNotice = document.getElementById('emptyNotice');
     const propIdInput = document.getElementById('propId');
-    const formTitle = document.getElementById('formTitle');
-    const cancelEdit = document.getElementById('cancelEdit');
-    const btnNew = document.getElementById('btnNew');
-    const btnClear = document.getElementById('btnClear');
-    const btnImport = document.getElementById('btnImport');
 
-    const detailModal = document.getElementById('detailModal');
+    const modal = document.getElementById('detailModal');
     const dTitle = document.getElementById('d-title');
     const dLocation = document.getElementById('d-location');
+    const dArea = document.getElementById('d-area');
+    const dBedrooms = document.getElementById('d-bedrooms');
+    const dBathrooms = document.getElementById('d-bathrooms');
     const dPrice = document.getElementById('d-price');
     const dDesc = document.getElementById('d-desc');
     const dImg = document.getElementById('d-img');
     const waLink = document.getElementById('waLink');
     const dClose = document.getElementById('dClose');
 
-    const settingsForm = document.getElementById('settingsForm');
-    const waNumber = document.getElementById('waNumber');
-    const waGreeting = document.getElementById('waGreeting');
-    const resetSettings = document.getElementById('resetSettings');
-    const openSettings = document.getElementById('openSettings');
-
-    function readPosts(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }catch(e){ return []; } }
-    function writePosts(posts){ localStorage.setItem(STORAGE_KEY, JSON.stringify(posts)); }
-    function readSettings(){ try{ return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {} }catch(e){ return {}; } }
-    function writeSettings(s){ localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
     function uid(){ return 'p_' + Date.now() + '_' + Math.floor(Math.random()*9000+1000); }
+    function readPosts(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e){ return []; } }
+    function writePosts(posts){ localStorage.setItem(STORAGE_KEY, JSON.stringify(posts)); }
 
     function render(){
       const posts = readPosts();
       cardsEl.innerHTML = '';
-      if(!posts.length){ emptyNotice.style.display = 'block'; return; }
+      if(posts.length === 0){ emptyNotice.style.display = 'block'; return; }
       emptyNotice.style.display = 'none';
       posts.slice().reverse().forEach(post => {
         const card = document.createElement('article');
         card.className = 'card';
         const img = document.createElement('img');
-        img.alt = post.title || 'Imagen inmueble';
-        img.src = post.img || (`https://source.unsplash.com/600x420/?house,apartment,home&sig=${post._sig||post.id}`);
-        const h = document.createElement('h3'); h.textContent = post.title || 'Sin título';
-        const pLoc = document.createElement('p'); pLoc.className='muted'; pLoc.textContent = post.location || '';
-        const pPrice = document.createElement('p'); pPrice.innerHTML = `<span class="tag">$ ${post.price || '—'}</span>`;
+        img.src = post.img || `https://source.unsplash.com/600x420/?house,apartment&sig=${post.id}`;
+        const content = document.createElement('div');
+        content.className = 'card-content';
+        content.innerHTML = `
+          <h3>${post.title || 'Sin título'}</h3>
+          <p class="muted">${post.location || ''}</p>
+          <p class="muted">${post.area ? post.area+' m²' : ''} ${post.bedrooms ? '• '+post.bedrooms+' dorm' : ''} ${post.bathrooms ? '• '+post.bathrooms+' baños' : ''}</p>
+          <p><span class="tag">$ ${post.price || '—'}</span></p>
+        `;
         const actions = document.createElement('p');
-
-        const viewBtn = document.createElement('button'); viewBtn.textContent='Ver'; viewBtn.className='secondary';
-        viewBtn.onclick = ()=> openDetail(post.id);
-
-        const editBtn = document.createElement('button'); editBtn.textContent='Editar'; editBtn.className='warning';
-        editBtn.onclick = ()=> loadForEdit(post.id);
-
-        const delBtn = document.createElement('button'); delBtn.textContent='Eliminar'; delBtn.className='danger';
-        delBtn.onclick = ()=> { if(!confirm('¿Eliminar publicación?')) return; deletePost(post.id); };
-
+        const viewBtn = document.createElement('button'); viewBtn.textContent='Ver'; viewBtn.className='secondary'; viewBtn.onclick=()=>openDetail(post.id);
+        const editBtn = document.createElement('button'); editBtn.textContent='Editar'; editBtn.className='warning'; editBtn.onclick=()=>loadForEdit(post.id);
+        const delBtn = document.createElement('button'); delBtn.textContent='Eliminar'; delBtn.className='danger'; delBtn.onclick=()=>{ if(confirm('¿Eliminar publicación?')) deletePost(post.id); };
         actions.append(viewBtn, editBtn, delBtn);
-        card.append(img, h, pLoc, pPrice, actions);
-        cardsEl.appendChild(card);
+        content.append(actions);
+        card.append(img, content);
+        cardsEl.append(card);
       });
     }
 
-    function savePost(data){
-      const posts = readPosts();
-      if(data.id){
-        const idx = posts.findIndex(p=>p.id===data.id);
-        if(idx>-1){ posts[idx] = { ...posts[idx], ...data }; }
-      } else {
-        data.id = uid();
-        data._sig = Math.floor(Math.random()*100000);
-        posts.push(data);
-      }
-      writePosts(posts);
-      render();
-    }
-    function deletePost(id){ let posts = readPosts(); posts = posts.filter(p=>p.id!==id); writePosts(posts); render(); }
-    function loadForEdit(id){
-      const p = readPosts().find(x=>x.id===id);
-      if(!p) return alert('Publicación no encontrada');
-      document.getElementById('title').value = p.title || '';
-      document.getElementById('price').value = p.price || '';
-      document.getElementById('location').value = p.location || '';
-      document.getElementById('desc').value = p.desc || '';
-      document.getElementById('img').value = p.img || '';
-      propIdInput.value = p.id;
-      formTitle.textContent = 'Editar publicación';
-      window.location.hash = '#nueva';
-    }
-    function openDetail(id){
-      const p = readPosts().find(x=>x.id===id);
-      if(!p) return alert('Publicación no encontrada');
-      dTitle.textContent = p.title || 'Sin título';
-      dLocation.textContent = p.location || '';
-      dPrice.textContent = '$ ' + (p.price || '—');
-      dDesc.textContent = p.desc || '';
-      dImg.src = p.img || `https://source.unsplash.com/800x600/?house,apartment,interior&sig=${p._sig||p.id}`;
-      const settings = readSettings();
-      const num = (settings.whatsappNumber || '').replace(/[^0-9]/g,'');
-      const greeting = settings.whatsappGreeting || '';
-      const pre = greeting ? greeting + ' ' : 'Hola, ';
-      const message = `${pre}estoy interesado en el inmueble "${p.title || 'sin título'}". ¿Está disponible?`;
-      if(!num){
-        waLink.href = '#';
-        waLink.onclick = (e)=>{ e.preventDefault(); alert('Configura un número de WhatsApp en Ajustes.'); };
-      } else {
-        waLink.href = `https://wa.me/${num}?text=` + encodeURIComponent(message);
-        waLink.onclick = null;
-      }
-      detailModal.classList.add('visible');
-      detailModal.setAttribute('aria-hidden','false');
-    }
-
-    form.addEventListener('submit', (e)=>{
+    form.onsubmit = e => {
       e.preventDefault();
+      const posts = readPosts();
       const data = {
-        title: document.getElementById('title').value.trim(),
-        price: document.getElementById('price').value.trim(),
-        location: document.getElementById('location').value.trim(),
-        desc: document.getElementById('desc').value.trim(),
-        img: document.getElementById('img').value.trim(),
+        id: propIdInput.value || uid(),
+        title: form.title.value.trim(),
+        price: form.price.value.trim(),
+        location: form.location.value.trim(),
+        area: form.area.value.trim(),
+        bedrooms: form.bedrooms.value.trim(),
+        bathrooms: form.bathrooms.value.trim(),
+        desc: form.desc.value.trim(),
+        img: form.img.value.trim()
       };
-      const id = propIdInput.value;
-      if(id) data.id = id;
-      savePost(data);
-      form.reset();
-      propIdInput.value = '';
-      formTitle.textContent = 'Crear nueva publicación';
-      window.location.hash = '#listado';
-    });
-    cancelEdit.addEventListener('click', ()=>{ form.reset(); propIdInput.value = ''; formTitle.textContent = 'Crear nueva publicación'; });
-    dClose.addEventListener('click', ()=>{ detailModal.classList.remove('visible'); detailModal.setAttribute('aria-hidden','true'); });
-    detailModal.addEventListener('click', (e)=>{ if(e.target === detailModal){ detailModal.classList.remove('visible'); detailModal.setAttribute('aria-hidden','true'); } });
-    btnNew.addEventListener('click', ()=>{ form.reset(); propIdInput.value = ''; formTitle.textContent = 'Crear nueva publicación'; window.location.hash = '#nueva'; });
-    btnClear.addEventListener('click', ()=>{ if(confirm('¿Vaciar publicaciones?')) { writePosts([]); render(); } });
-    btnImport.addEventListener('click', (e)=>{ e.preventDefault(); importSample(); });
+      if(propIdInput.value){
+        const idx = posts.findIndex(p=>p.id===propIdInput.value);
+        if(idx>=0) posts[idx]=data;
+      } else posts.push(data);
+      writePosts(posts); form.reset(); propIdInput.value=''; render();
+    };
 
-    function loadSettingsToForm(){ const s = readSettings(); waNumber.value = s.whatsappNumber || ''; waGreeting.value = s.whatsappGreeting || 'Hola,'; }
-    settingsForm.addEventListener('submit', (e)=>{ e.preventDefault(); writeSettings({ whatsappNumber: waNumber.value.trim(), whatsappGreeting: waGreeting.value.trim() }); alert('Ajustes guardados'); });
-    resetSettings.addEventListener('click', ()=>{ localStorage.removeItem(SETTINGS_KEY); loadSettingsToForm(); alert('Ajustes restaurados'); });
-    openSettings.addEventListener('click', ()=>{ window.location.hash = '#ajustes'; loadSettingsToForm(); });
+    function loadForEdit(id){
+      const post = readPosts().find(p=>p.id===id); if(!post) return;
+      form.title.value = post.title||''; form.price.value=post.price||'';
+      form.location.value=post.location||''; form.area.value=post.area||'';
+      form.bedrooms.value=post.bedrooms||''; form.bathrooms.value=post.bathrooms||'';
+      form.desc.value=post.desc||''; form.img.value=post.img||'';
+      propIdInput.value=post.id;
+      showSection('admin');
+    }
+    function deletePost(id){ let posts=readPosts().filter(p=>p.id!==id); writePosts(posts); render(); }
+    function openDetail(id){
+      const post = readPosts().find(p=>p.id===id); if(!post) return;
+      dTitle.textContent = post.title||'';
+      dLocation.textContent = post.location||'';
+      dArea.textContent = post.area? `Área: ${post.area} m²` : '';
+      dBedrooms.textContent = post.bedrooms? `Dormitorios: ${post.bedrooms}` : '';
+      dBathrooms.textContent = post.bathrooms? `Baños: ${post.bathrooms}` : '';
+      dPrice.textContent = post.price? `Precio: $${post.price}` : '';
+      dDesc.textContent = post.desc||'';
+      dImg.src = post.img || `https://source.unsplash.com/600x420/?house,apartment&sig=${post.id}`;
+      const message = encodeURIComponent(`Hola, estoy interesado en la propiedad: ${post.title} (${post.location}).`);
+      waLink.href = `https://wa.me/${WA_NUMBER.replace(/\D/g,'')}?text=${message}`;
+      modal.style.display='block';
+    }
+    dClose.onclick=()=>modal.style.display='none';
+    window.onclick=e=>{ if(e.target==modal) modal.style.display='none'; };
+    document.getElementById('cancelEdit').onclick=()=>{ form.reset(); propIdInput.value=''; };
 
-    function importSample(){
-      const sample = [
-        { id: uid(), title: 'Departamento 2D moderno', price:'120000', location:'Centro', desc:'Luminoso, 2 dormitorios, balcón con vista.', _sig:101 },
-        { id: uid(), title: 'Casa familiar con patio', price:'220000', location:'Bº Jardín', desc:'3 dormitorios, gran jardín y cochera.', _sig:102 },
-        { id: uid(), title: 'Monoambiente para inversor', price:'65000', location:'Microcentro', desc:'Monoambiente alquilado, ROI 6% anual.', _sig:103 },
-      ];
-      writePosts(sample); render(); alert('Ejemplo importado.');
+    function showSection(id){
+      document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
     }
 
-    (function init(){
-      if(!localStorage.getItem(STORAGE_KEY)){ writePosts([]); }
-      if(!localStorage.getItem(SETTINGS_KEY)){ writeSettings({ whatsappNumber: '', whatsappGreeting: 'Hola,' }); }
-      loadSettingsToForm(); render();
-    })();
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ detailModal.classList.remove('visible'); detailModal.setAttribute('aria-hidden','true'); } });
+    render();
   </script>
 </body>
 </html>
