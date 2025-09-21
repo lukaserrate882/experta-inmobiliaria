@@ -37,7 +37,7 @@
     .hero p { margin-top: 1rem; font-size: 1.25rem; }
     .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
     .card { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background: var(--secondary-bg); }
-    .card img { width:100%; height:200px; object-fit:cover; }
+    .card img { width: 100%; height: 200px; object-fit: cover; }
     .card-content { padding: 1rem; }
     .card-content h3 { margin: 0 0 .5rem 0; color: var(--text-color);}
     .card-content .muted { font-size: .9rem; color: #333; margin-bottom: .5rem; }
@@ -67,7 +67,7 @@
       background: var(--primary-bg); padding: 2rem; border-radius: 8px; max-width: 600px; margin: 2rem auto;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    #admin h2 { text-align: center; }
+    #admin h2 { text-align: center; margin-bottom: 1rem; }
     #admin input, #admin select, #admin textarea {
       width: 100%; padding: .5rem; margin-bottom: 1rem; border-radius: 4px; border: 1px solid #ccc;
       background: #fff; color: var(--text-color);
@@ -99,28 +99,13 @@
     </section>
 
     <section id="listado" class="cards">
+      <!-- Propiedades iniciales -->
       <div class="card">
-        <img src="https://source.unsplash.com/400x300/?house" alt="Propiedad 1" onerror="this.src='https://via.placeholder.com/400x300?text=Propiedad+1'">
+        <img src="https://source.unsplash.com/400x300/?house" alt="Propiedad 1">
         <div class="card-content">
           <h3>Casa en venta</h3>
           <div class="muted">Zona Norte, La Paz</div>
           <span class="tag">Venta</span>
-        </div>
-      </div>
-      <div class="card">
-        <img src="https://source.unsplash.com/400x300/?apartment" alt="Propiedad 2" onerror="this.src='https://via.placeholder.com/400x300?text=Propiedad+2'">
-        <div class="card-content">
-          <h3>Departamento en alquiler</h3>
-          <div class="muted">Centro, La Paz</div>
-          <span class="tag">Alquiler</span>
-        </div>
-      </div>
-      <div class="card">
-        <img src="https://source.unsplash.com/400x300/?villa" alt="Propiedad 3" onerror="this.src='https://via.placeholder.com/400x300?text=Propiedad+3'">
-        <div class="card-content">
-          <h3>Villa en anticrético</h3>
-          <div class="muted">Zona Sur, La Paz</div>
-          <span class="tag offer">Anticrético</span>
         </div>
       </div>
     </section>
@@ -170,9 +155,7 @@
 
   <script>
     function showSection(id) {
-      document.querySelectorAll('main > section').forEach(section => {
-        section.classList.add('hidden');
-      });
+      document.querySelectorAll('main > section').forEach(section => section.classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
     }
 
@@ -184,6 +167,9 @@
     document.getElementById('adminForm').addEventListener('submit', function(e){
       e.preventDefault();
       const form = e.target;
+      const file = form.foto.files[0];
+      if(!file) { alert('Selecciona una imagen'); return; }
+
       const reader = new FileReader();
       reader.onload = function(event) {
         const imgSrc = event.target.result;
@@ -204,8 +190,8 @@
         document.getElementById('listado').appendChild(card);
         form.reset();
         alert('Propiedad agregada correctamente');
-      }
-      reader.readAsDataURL(form.foto.files[0]);
+      };
+      reader.readAsDataURL(file);
     });
   </script>
 </body>
